@@ -2,8 +2,9 @@
 
 //Step 1. Creates an XMLHttp Request Object
 let xhr = new XMLHttpRequest();
-let xhrTwo = new XMLHttpRequest();
-let zipCode = 90210; //prompt("Enter zip code to get City, State, and Weather?");
+let xhr2 = new XMLHttpRequest();
+
+const zipCode = 19143; //prompt("Enter zip code to get City, State, and Weather?");
 let lon;
 let lat;
 
@@ -15,7 +16,7 @@ xhr.onreadystatechange = function() {
         lat = locationResponse.places[0].latitude;
         let city = locationResponse.places[0]["place name"];
         let state = locationResponse.places[0]["state abbreviation"];
-        // console.log(locationResponse);
+        console.log(locationResponse);
         console.log(lon);
         console.log(lat);
         document.getElementById('zipCode').innerHTML = city + ", " + state;
@@ -25,9 +26,9 @@ xhr.onreadystatechange = function() {
 }
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~PART TWO~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-xhrTwo.onreadystatechange = function() {
-    if (xhrTwo.readyState === 4 && xhrTwo.status === 200) {
-        let weatherResponse = JSON.parse(xhrTwo.responseText);
+xhr2.onreadystatechange = function() {
+    if (xhr2.readyState === 4 && xhr2.status === 200) {
+        let weatherResponse = JSON.parse(xhr2.responseText);
         let temp = weatherResponse.dataseries[0].weather;
         console.log(weatherResponse);
         document.getElementById('weather').innerHTML = temp;
@@ -36,12 +37,17 @@ xhrTwo.onreadystatechange = function() {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 //Step 3. Open request
+
 xhr.open('GET', 'http://api.zippopotam.us/US/'+zipCode);
-//xhrTwo.open('GET', 'http://www.7timer.info/bin/api.pl?product=civillight&output=json&lon=' + lon + "&lat=" + lat);
-xhrTwo.open('GET', 'http://www.7timer.info/bin/api.pl?product=civillight&output=json&lon=-118.4065&lat=34.0901');
+
+//Below code returns the incorrect weather type of lightrain when passing the values via declared variables
+//xhr2.open('GET', `http://www.7timer.info/bin/api.pl?product=civillight&lon=${lon}&lat=${lat}&output=json`);
+
+//If hard coded, correct weather type is returned
+xhr2.open('GET', 'http://www.7timer.info/bin/api.pl?product=civillight&lon=-75.2288&lat=39.9448&output=json');
 
 //Step 4. Send request
 function sendAJAX() {
     xhr.send();
-    xhrTwo.send();
+    xhr2.send();
   }
